@@ -12,9 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rooms', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+    $table->id();
+    $table->foreignId('hotel_id')->constrained()->cascadeOnDelete();
+    $table->string('room_number')->nullable();
+    $table->string('type'); // Single, Double, Suite
+    $table->unsignedTinyInteger('capacity')->default(1);
+    $table->decimal('price_per_night', 10, 2);
+    $table->string('status')->default('available'); // available, maintenance
+    $table->timestamps();
+
+    $table->unique(['hotel_id', 'room_number']); // optional uniqueness
+});
+
     }
 
     /**

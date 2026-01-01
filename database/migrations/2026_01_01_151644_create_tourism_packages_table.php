@@ -12,9 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tourism_packages', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+    $table->id();
+    $table->foreignId('hotel_id')->constrained()->cascadeOnDelete();
+    $table->string('title');
+    $table->text('description')->nullable();
+    $table->decimal('price', 10, 2);
+    $table->unsignedInteger('duration_days')->default(1);
+    $table->timestamps();
+});
+
     }
 
     /**

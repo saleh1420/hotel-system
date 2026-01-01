@@ -12,9 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+    $table->id();
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->foreignId('room_id')->constrained()->cascadeOnDelete();
+    $table->date('check_in');
+    $table->date('check_out');
+    $table->unsignedTinyInteger('guests_count')->default(1);
+    $table->decimal('total_price', 10, 2)->default(0);
+    $table->string('status')->default('pending'); // pending, confirmed, cancelled
+    $table->timestamps();
+
+    $table->index(['room_id', 'check_in', 'check_out']); // helps availability checks later
+});
+
     }
 
     /**
